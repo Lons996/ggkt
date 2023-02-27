@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.OrderInfoMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.order_entity.OrderInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="origin_amount" property="originAmount" jdbcType="DECIMAL"/>
+        <result column="coupon_reduce" property="couponReduce" jdbcType="DECIMAL"/>
+        <result column="final_amount" property="finalAmount" jdbcType="DECIMAL"/>
+        <result column="order_status" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="trade_body" property="tradeBody" jdbcType="VARCHAR"/>
+        <result column="session_id" property="sessionId" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from order_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.order_entity.OrderInfo">
+        insert into order_info (id, user_id, nick_name,
+                                phone, origin_amount, coupon_reduce,
+                                final_amount, order_status, out_trade_no,
+                                trade_body, session_id, province,
+                                pay_time, expire_time, create_time,
+                                update_time, is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR}, #{originAmount,jdbcType=DECIMAL}, #{couponReduce,jdbcType=DECIMAL},
+                #{finalAmount,jdbcType=DECIMAL}, #{orderStatus,jdbcType=VARCHAR}, #{outTradeNo,jdbcType=VARCHAR},
+                #{tradeBody,jdbcType=VARCHAR}, #{sessionId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+                #{payTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.order_entity.OrderInfo">
+        update order_info
+        set user_id       = #{userId,jdbcType=BIGINT},
+            nick_name     = #{nickName,jdbcType=VARCHAR},
+            phone         = #{phone,jdbcType=VARCHAR},
+            origin_amount = #{originAmount,jdbcType=DECIMAL},
+            coupon_reduce = #{couponReduce,jdbcType=DECIMAL},
+            final_amount  = #{finalAmount,jdbcType=DECIMAL},
+            order_status  = #{orderStatus,jdbcType=VARCHAR},
+            out_trade_no  = #{outTradeNo,jdbcType=VARCHAR},
+            trade_body    = #{tradeBody,jdbcType=VARCHAR},
+            session_id    = #{sessionId,jdbcType=VARCHAR},
+            province      = #{province,jdbcType=VARCHAR},
+            pay_time      = #{payTime,jdbcType=TIMESTAMP},
+            expire_time   = #{expireTime,jdbcType=TIMESTAMP},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted    = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               user_id,
+               nick_name,
+               phone,
+               origin_amount,
+               coupon_reduce,
+               final_amount,
+               order_status,
+               out_trade_no,
+               trade_body,
+               session_id,
+               province,
+               pay_time,
+               expire_time,
+               create_time,
+               update_time,
+               is_deleted
+        from order_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               user_id,
+               nick_name,
+               phone,
+               origin_amount,
+               coupon_reduce,
+               final_amount,
+               order_status,
+               out_trade_no,
+               trade_body,
+               session_id,
+               province,
+               pay_time,
+               expire_time,
+               create_time,
+               update_time,
+               is_deleted
+        from order_info
+    </select>
+
+    <!-- List<OrderInfoQueryVo> selectToVoPage(OrderInfoQueryVo orderInfoQueryVo); -->
+    <select id="selectToVoPage" resultType="top.zwf666.mycreatebean.order_entity.OrderInfo">
+        select id,
+        user_id,
+        nick_name,
+        phone,
+        origin_amount,
+        coupon_reduce,
+        final_amount,
+        order_status,
+        out_trade_no,
+        trade_body,
+        session_id,
+        province,
+        pay_time,
+        expire_time,
+        create_time,
+        update_time,
+        is_deleted from order_info
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != ''">
+                and out_trade_no = #{outTradeNo}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="orderStatus == 1">
+                and order_status = 1
+            </if>
+            <if test="orderStatus == 0">
+                and order_status = 0
+            </if>
+            <if test="createTimeBegin != null and createTimeBegin != ''">
+                and create_time >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null and createTimeEnd != ''">
+                and create_time &lt;= #{createTimeEnd}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

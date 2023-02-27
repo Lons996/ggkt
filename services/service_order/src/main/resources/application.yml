@@ -1,0 +1,37 @@
+server:
+  port: 8302
+
+spring:
+  application:
+    name: service-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.111.100:8848
+
+  # druid 数据源配置-----------------------------------
+  datasource:
+    druid:
+      username: root
+      password: as020615
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:13306/glkt_order?characterEncoding=utf-8&useSSL=false
+
+# mybatis 数据源配置-----------------------------------
+mybatis:
+  mapper-locations: classpath:mapper/*.xml #指定mapper 映射文件位置
+  type-aliases-package: top.zwf666.ggkt.vo.order,top.zwf666.mycreatebean #为指定的包设置别名
+  configuration:
+    lazy-loading-enabled: true #懒加载
+    map-underscore-to-camel-case: true #自动转换驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志
+
+#分页插件的配置 -----------------------------------
+pagehelper:
+  params: count=countSql  #为了支持 startPage(Object params) 方法
+  helper-dialect: mysql #分页助手方言：mysql
+  support-methods-arguments: true #支持通过 Mapper 接口参数来传递分页参数 (默认值 false)
+  reasonable: true #分页合理化参数，页码不为负，不超总页码 (默认值为 false)
+  page-size-zero: true #pageSize=0 或者 RowBounds.limit =0 直接查询全部数据（默认false）
+
+

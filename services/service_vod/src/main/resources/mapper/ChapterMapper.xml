@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.ChapterMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.vod_entity.Chapter">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="course_id" property="courseId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from chapter
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByByCourseId" parameterType="java.lang.Long">
+        delete
+        from chapter
+        where course_id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.vod_entity.Chapter" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into chapter (id, course_id, title,
+                             sort, create_time, update_time,
+                             is_deleted)
+        values (null,
+                #{courseId,jdbcType=BIGINT},
+                #{title,jdbcType=VARCHAR},
+                0,
+                null,
+                null, 0)
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.vod_entity.Chapter">
+        update chapter
+        set title = #{title,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, course_id, title, sort, create_time, update_time, is_deleted
+        from chapter
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, course_id, title, sort, create_time, update_time, is_deleted
+        from chapter
+    </select>
+
+    <select id="selectVideoOriginalName" resultType="String">
+        select video_original_name
+        from video
+        where id = #{id}
+    </select>
+
+    <!--  List<Chapter> backfillChapter(@Param("id")Integer id);  -->
+    <select id="backfillChapter" resultType="Chapter">
+        select * from  chapter
+        where  course_id = #{id}
+    </select>
+</mapper>

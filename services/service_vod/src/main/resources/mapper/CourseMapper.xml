@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.vod_entity.Course">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="teacher_id" property="teacherId" jdbcType="BIGINT"/>
+        <result column="subject_id" property="subjectId" jdbcType="BIGINT"/>
+        <result column="subject_parent_id" property="subjectParentId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="lesson_num" property="lessonNum" jdbcType="INTEGER"/>
+        <result column="duration_sum" property="durationSum" jdbcType="INTEGER"/>
+        <result column="cover" property="cover" jdbcType="VARCHAR"/>
+        <result column="buy_count" property="buyCount" jdbcType="BIGINT"/>
+        <result column="view_count" property="viewCount" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from course
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.vod_entity.Course" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into course (id, teacher_id, subject_id,
+                            subject_parent_id, title, price,
+                            lesson_num, duration_sum, cover,
+                            buy_count, view_count, status,
+                            publish_time, create_time, update_time,
+                            is_deleted)
+        values (null,
+                #{teacherId,jdbcType=BIGINT},
+                #{subjectId,jdbcType=BIGINT},
+                #{subjectParentId,jdbcType=BIGINT},
+                #{title,jdbcType=VARCHAR},
+                #{price,jdbcType=DECIMAL},
+                #{lessonNum,jdbcType=INTEGER},
+                1000,
+                #{cover,jdbcType=VARCHAR},
+                #{buyCount,jdbcType=BIGINT},
+                #{viewCount,jdbcType=BIGINT},
+                #{status,jdbcType=TINYINT},
+                #{publishTime,jdbcType=TIMESTAMP},
+                null,
+                null,
+                0)
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.vod_entity.Course">
+        update course
+        set teacher_id        = #{teacherId,jdbcType=BIGINT},
+            subject_id        = #{subjectId,jdbcType=BIGINT},
+            subject_parent_id = #{subjectParentId,jdbcType=BIGINT},
+            title             = #{title,jdbcType=VARCHAR},
+            price             = #{price,jdbcType=DECIMAL},
+            lesson_num        = #{lessonNum,jdbcType=INTEGER},
+            duration_sum      = #{durationSum,jdbcType=INTEGER},
+            cover             = #{cover,jdbcType=VARCHAR},
+            buy_count         = #{buyCount,jdbcType=BIGINT},
+            view_count        = #{viewCount,jdbcType=BIGINT},
+            status            = #{status,jdbcType=TINYINT},
+            publish_time      = #{publishTime,jdbcType=TIMESTAMP},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            update_time       = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted        = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               teacher_id,
+               subject_id,
+               subject_parent_id,
+               title,
+               price,
+               lesson_num,
+               duration_sum,
+               cover,
+               buy_count,
+               view_count,
+               status,
+               publish_time,
+               create_time,
+               update_time,
+               is_deleted
+        from course
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               teacher_id,
+               subject_id,
+               subject_parent_id,
+               title,
+               price,
+               lesson_num,
+               duration_sum,
+               cover,
+               buy_count,
+               view_count,
+               status,
+               publish_time,
+               create_time,
+               update_time,
+               is_deleted
+        from course
+    </select>
+
+    <!-- 分页条件查询-->
+    <resultMap id="CourseMap" type="Course">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="teacher_id" property="teacherId" jdbcType="BIGINT"/>
+        <result column="subject_id" property="subjectId" jdbcType="BIGINT"/>
+        <result column="subject_parent_id" property="subjectParentId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="lesson_num" property="lessonNum" jdbcType="INTEGER"/>
+        <result column="duration_sum" property="durationSum" jdbcType="INTEGER"/>
+        <result column="cover" property="cover" jdbcType="VARCHAR"/>
+        <result column="buy_count" property="buyCount" jdbcType="BIGINT"/>
+        <result column="view_count" property="viewCount" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+        <collection property="teacher" fetchType="lazy" column="teacher_id"
+                    select="top.zwf666.mapper.TeacherMapper.selectNameByPrimaryKey"/>
+        <collection property="subject" fetchType="lazy" column="subject_id"
+                    select="top.zwf666.mapper.SubjectMapper.selectNameByPrimaryKey"/>
+        <collection property="subjectParent" fetchType="lazy" column="subject_parent_id"
+                    select="top.zwf666.mapper.SubjectMapper.selectNameByPrimaryKey"/>
+    </resultMap>
+    <select id="getPageData" resultMap="CourseMap">
+        select * from `course`
+        <where>
+            <if test="teacherId != null and teacherId > 0">
+                teacher_id = #{teacherId}
+            </if>
+            <if test="subjectId != null and subjectId > 0">
+                and subject_id = #{subjectId}
+            </if>
+            <if test="subjectParentId != null and subjectParentId > 0">
+                and subject_parent_id = #{subjectParentId}
+            </if>
+            <if test="title != null and title != ''">
+                and title like "%"#{title}"%"
+            </if>
+            and is_deleted = 0
+        </where>
+    </select>
+
+    <!--  根据id更新图片  -->
+    <update id="updateCoverById">
+        update course
+        set cover = #{cover}
+        where id = #{id}
+    </update>
+
+    <!--  根据id更新课程表部分信息  -->
+    <update id="updateCourse">
+        update course
+        set title             = #{title},
+            subject_parent_id = #{subjectParentId},
+            subject_id        = #{subjectId},
+            teacher_id        = #{teacherId},
+            price             = #{price},
+            price             = #{price},
+            lesson_num        = #{lessonNum}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByByCourseId" parameterType="java.lang.Long">
+        delete
+        from chapter
+        where course_id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--  CoursePublishVo backfillCourseData(@Param("id") Integer id);  -->
+    <select id="backfillCourseData" resultType="CoursePublishVo">
+        select c.id,
+               c.title,
+               c.lesson_num as lessonNum,
+               c.cover,
+               c.price,
+               t.name       as teacherName,
+               s.title      as subjectTitle,
+               s2.title     as subjectParentTitle
+        from `course` as c
+                 left join `teacher` as t on c.teacher_id = t.id
+                 left join `subject` as s on c.subject_id = s.id
+                 left join `subject` as s2 on c.subject_parent_id = s2.id
+        where c.id = #{id}
+    </select>
+
+    <!--  void publishCourse(@Param("id") Integer courseId);  -->
+    <update id="publishCourse">
+        update course
+        set status = 1
+        where id = #{id}
+    </update>
+
+    <!--   int isPublish(@Param("id") Integer courseId);  -->
+    <select id="isPublish" resultType="int">
+        select status
+        from course
+        where id = #{id}
+    </select>
+</mapper>
+
+

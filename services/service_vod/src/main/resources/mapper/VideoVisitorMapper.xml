@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.VideoVisitorMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.vod_entity.VideoVisitor">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="course_id" property="courseId" jdbcType="BIGINT"/>
+        <result column="video_id" property="videoId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="join_time" property="joinTime" jdbcType="VARCHAR"/>
+        <result column="leave_time" property="leaveTime" jdbcType="VARCHAR"/>
+        <result column="duration" property="duration" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from video_visitor
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.vod_entity.VideoVisitor">
+        insert into video_visitor (id, course_id, video_id,
+                                   user_id, nick_name, join_time,
+                                   leave_time, duration, create_time,
+                                   update_time, is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{videoId,jdbcType=BIGINT},
+                #{userId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{joinTime,jdbcType=VARCHAR},
+                #{leaveTime,jdbcType=VARCHAR}, #{duration,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.vod_entity.VideoVisitor">
+        update video_visitor
+        set course_id   = #{courseId,jdbcType=BIGINT},
+            video_id    = #{videoId,jdbcType=BIGINT},
+            user_id     = #{userId,jdbcType=VARCHAR},
+            nick_name   = #{nickName,jdbcType=VARCHAR},
+            join_time   = #{joinTime,jdbcType=VARCHAR},
+            leave_time  = #{leaveTime,jdbcType=VARCHAR},
+            duration    = #{duration,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted  = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               course_id,
+               video_id,
+               user_id,
+               nick_name,
+               join_time,
+               leave_time,
+               duration,
+               create_time,
+               update_time,
+               is_deleted
+        from video_visitor
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               course_id,
+               video_id,
+               user_id,
+               nick_name,
+               join_time,
+               leave_time,
+               duration,
+               create_time,
+               update_time,
+               is_deleted
+        from video_visitor
+    </select>
+
+    <select id="selectSortData" resultType="VideoVisitorCountVo">
+        select DATE(join_time) as join_time, COUNT(*) as userCount
+        from video_visitor
+        <where>
+            <if test="startDate != '' and startDate != null">
+                and DATE(join_time) >= #{startDate}
+            </if>
+            <if test="endDate != '' and endDate != null">
+                and DATE(join_time) &lt;= #{endDate}
+            </if>
+            and course_id = #{courseId}
+        </where>
+        group by DATE(join_time)
+        order by DATE(join_time)
+    </select>
+</mapper>

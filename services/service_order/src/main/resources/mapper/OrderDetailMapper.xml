@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.OrderDetailMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.order_entity.OrderDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="course_id" property="courseId" jdbcType="BIGINT"/>
+        <result column="course_name" property="courseName" jdbcType="VARCHAR"/>
+        <result column="cover" property="cover" jdbcType="VARCHAR"/>
+        <result column="order_id" property="orderId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="origin_amount" property="originAmount" jdbcType="DECIMAL"/>
+        <result column="coupon_reduce" property="couponReduce" jdbcType="DECIMAL"/>
+        <result column="final_amount" property="finalAmount" jdbcType="DECIMAL"/>
+        <result column="session_id" property="sessionId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from order_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.order_entity.OrderDetail">
+        insert into order_detail (id, course_id, course_name,
+                                  cover, order_id, user_id,
+                                  origin_amount, coupon_reduce, final_amount,
+                                  session_id, create_time, update_time,
+                                  is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR},
+                #{cover,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+                #{originAmount,jdbcType=DECIMAL}, #{couponReduce,jdbcType=DECIMAL}, #{finalAmount,jdbcType=DECIMAL},
+                #{sessionId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.order_entity.OrderDetail">
+        update order_detail
+        set course_id     = #{courseId,jdbcType=BIGINT},
+            course_name   = #{courseName,jdbcType=VARCHAR},
+            cover         = #{cover,jdbcType=VARCHAR},
+            order_id      = #{orderId,jdbcType=BIGINT},
+            user_id       = #{userId,jdbcType=BIGINT},
+            origin_amount = #{originAmount,jdbcType=DECIMAL},
+            coupon_reduce = #{couponReduce,jdbcType=DECIMAL},
+            final_amount  = #{finalAmount,jdbcType=DECIMAL},
+            session_id    = #{sessionId,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted    = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               course_id,
+               course_name,
+               cover,
+               order_id,
+               user_id,
+               origin_amount,
+               coupon_reduce,
+               final_amount,
+               session_id,
+               create_time,
+               update_time,
+               is_deleted
+        from order_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               course_id,
+               course_name,
+               cover,
+               order_id,
+               user_id,
+               origin_amount,
+               coupon_reduce,
+               final_amount,
+               session_id,
+               create_time,
+               update_time,
+               is_deleted
+        from order_detail
+    </select>
+
+    <!--  top.zwf666.ggkt.model.order.OrderDetail selectByOrderId(@Param("orderId") Long id);  -->
+    <select id="selectByOrderId" resultType="top.zwf666.ggkt.model.order.OrderDetail">
+        select *
+        from order_detail
+        where order_id = #{orderId}
+    </select>
+</mapper>

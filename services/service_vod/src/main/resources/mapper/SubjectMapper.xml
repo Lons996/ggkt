@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.SubjectMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.vod_entity.Subject">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from subject
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.vod_entity.Subject">
+        insert into subject (id, title, parent_id,
+                             sort, create_time, update_time,
+                             is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT},
+                #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.vod_entity.Subject">
+        update subject
+        set title       = #{title,jdbcType=VARCHAR},
+            parent_id   = #{parentId,jdbcType=BIGINT},
+            sort        = #{sort,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted  = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, title, parent_id, sort, create_time, update_time, is_deleted
+        from subject
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, title, parent_id, sort, create_time, update_time, is_deleted
+        from subject
+    </select>
+
+    <select id="selectByParentId" resultType="Subject">
+        select *
+        from `subject`
+        where parent_id = #{parentId}
+    </select>
+
+    <select id="selectIsNode" resultType="int">
+        select count(*)
+        from `subject`
+        where parent_id = #{id}
+    </select>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into subject values
+        <foreach collection="list" item="item" separator=",">
+            (null,
+            #{item.title},
+            #{item.parentId},
+            #{item.sort},
+            null,null, 0)
+        </foreach>
+    </insert>
+
+    <!-- 根据ID查询名称  -->
+    <select id="selectNameByPrimaryKey" resultType="String">
+        select title from `subject`
+        where id = #{id}
+    </select>
+</mapper>

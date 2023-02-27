@@ -1,0 +1,46 @@
+
+server:
+  port: 8366
+
+spring:
+  application:
+    name: service-wechat
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.111.100:8848 #指定服务注册的主机地址：端口号
+
+  #druid 数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:13306/glkt_wechat?characterEncoding=utf-8&useSSL=false
+      username: root
+      password: as020615
+
+  #指定JSON返回数据的时间格式及时区（东八区）
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+mybatis:
+  type-aliases-package: top.zwf666.ggkt.vo.vod , top.zwf666.mycreatebean #设置别名
+  mapper-locations: classpath:mapper/*.xml #指定sql映射文件的位置
+  configuration:
+    map-underscore-to-camel-case: true #自动转换驼峰
+    lazy-loading-enabled: true #延迟加载
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志
+
+#分页插件的配置
+pagehelper:
+  params: count=countSql  #为了支持 startPage(Object params) 方法
+  helper-dialect: mysql #分页助手方言：mysql
+  support-methods-arguments: true #支持通过 Mapper 接口参数来传递分页参数 (默认值 false)
+  reasonable: true #分页合理化参数，页码不为负，不超总页码 (默认值为 false)
+  page-size-zero: true #pageSize=0 或者 RowBounds.limit =0 直接查询全部数据（默认false）
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.CouponUseMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.activity_entity.CouponUse">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="coupon_id" property="couponId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="order_id" property="orderId" jdbcType="BIGINT"/>
+        <result column="coupon_status" property="couponStatus" jdbcType="VARCHAR"/>
+        <result column="get_time" property="getTime" jdbcType="TIMESTAMP"/>
+        <result column="using_time" property="usingTime" jdbcType="TIMESTAMP"/>
+        <result column="used_time" property="usedTime" jdbcType="TIMESTAMP"/>
+        <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from coupon_use
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.activity_entity.CouponUse">
+        insert into coupon_use (id, coupon_id, user_id,
+                                order_id, coupon_status, get_time,
+                                using_time, used_time, expire_time,
+                                create_time, update_time, is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+                #{orderId,jdbcType=BIGINT}, #{couponStatus,jdbcType=VARCHAR}, #{getTime,jdbcType=TIMESTAMP},
+                #{usingTime,jdbcType=TIMESTAMP}, #{usedTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.activity_entity.CouponUse">
+        update coupon_use
+        set coupon_id     = #{couponId,jdbcType=BIGINT},
+            user_id       = #{userId,jdbcType=BIGINT},
+            order_id      = #{orderId,jdbcType=BIGINT},
+            coupon_status = #{couponStatus,jdbcType=VARCHAR},
+            get_time      = #{getTime,jdbcType=TIMESTAMP},
+            using_time    = #{usingTime,jdbcType=TIMESTAMP},
+            used_time     = #{usedTime,jdbcType=TIMESTAMP},
+            expire_time   = #{expireTime,jdbcType=TIMESTAMP},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted    = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               coupon_id,
+               user_id,
+               order_id,
+               coupon_status,
+               get_time,
+               using_time,
+               used_time,
+               expire_time,
+               create_time,
+               update_time,
+               is_deleted
+        from coupon_use
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               coupon_id,
+               user_id,
+               order_id,
+               coupon_status,
+               get_time,
+               using_time,
+               used_time,
+               expire_time,
+               create_time,
+               update_time,
+               is_deleted
+        from coupon_use
+    </select>
+
+    <!--  List<top.zwf666.ggkt.model.activity.CouponUse> selectPage(CouponUseQueryVo couponUseQueryVo); -->
+    <select id="selectPage" resultType="top.zwf666.mycreatebean.activity_entity.CouponUse">
+        select *
+        from coupon_use
+        <where>
+            <if test="couponId != null and couponId != '' ">
+                coupon_id = #{couponId}
+            </if>
+            <if test="couponStatus == 0 ">
+                coupon_status = 0
+            </if>
+            <if test="couponStatus == 1 ">
+                coupon_status = 1
+            </if>
+            <if test="getTimeBegin != null and getTimeBegin != '' ">
+                get_time >= #{getTimeBegin}
+            </if>
+            <if test="getTimeEnd != null and getTimeEnd != '' ">
+                get_time &lt;= #{getTimeEnd}
+            </if>
+        </where>
+    </select>
+</mapper>

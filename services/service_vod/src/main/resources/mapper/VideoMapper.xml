@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.VideoMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.vod_entity.Video">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="course_id" property="courseId" jdbcType="BIGINT"/>
+        <result column="chapter_id" property="chapterId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="video_source_id" property="videoSourceId" jdbcType="VARCHAR"/>
+        <result column="video_original_name" property="videoOriginalName" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="play_count" property="playCount" jdbcType="BIGINT"/>
+        <result column="is_free" property="isFree" jdbcType="BIT"/>
+        <result column="duration" property="duration" jdbcType="REAL"/>
+        <result column="size" property="size" jdbcType="BIGINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from video
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.vod_entity.Video">
+        insert into video (id, course_id, chapter_id,
+                           title, video_source_id, video_original_name,
+                           sort, play_count, is_free,
+                           duration, size, version,
+                           status, create_time, update_time,
+                           is_deleted)
+        values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{chapterId,jdbcType=BIGINT},
+                #{title,jdbcType=VARCHAR}, #{videoSourceId,jdbcType=VARCHAR}, #{videoOriginalName,jdbcType=VARCHAR},
+                #{sort,jdbcType=INTEGER}, #{playCount,jdbcType=BIGINT}, #{isFree,jdbcType=BIT},
+                #{duration,jdbcType=REAL}, #{size,jdbcType=BIGINT}, #{version,jdbcType=BIGINT},
+                #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=TINYINT})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.vod_entity.Video">
+        update video
+        set course_id           = #{courseId,jdbcType=BIGINT},
+            chapter_id          = #{chapterId,jdbcType=BIGINT},
+            title               = #{title,jdbcType=VARCHAR},
+            video_source_id     = #{videoSourceId,jdbcType=VARCHAR},
+            video_original_name = #{videoOriginalName,jdbcType=VARCHAR},
+            sort                = #{sort,jdbcType=INTEGER},
+            play_count          = #{playCount,jdbcType=BIGINT},
+            is_free             = #{isFree,jdbcType=BIT},
+            duration            = #{duration,jdbcType=REAL},
+            size                = #{size,jdbcType=BIGINT},
+            version             = #{version,jdbcType=BIGINT},
+            status              = #{status,jdbcType=TINYINT},
+            create_time         = #{createTime,jdbcType=TIMESTAMP},
+            update_time         = #{updateTime,jdbcType=TIMESTAMP},
+            is_deleted          = #{isDeleted,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               course_id,
+               chapter_id,
+               title,
+               video_source_id,
+               video_original_name,
+               sort,
+               play_count,
+               is_free,
+               duration,
+               size,
+               version,
+               status,
+               create_time,
+               update_time,
+               is_deleted
+        from video
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               course_id,
+               chapter_id,
+               title,
+               video_source_id,
+               video_original_name,
+               sort,
+               play_count,
+               is_free,
+               duration,
+               size,
+               version,
+               status,
+               create_time,
+               update_time,
+               is_deleted
+        from video
+    </select>
+
+    <delete id="deleteVideoByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from video
+        where course_id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- int insertVideo( Video video);-->
+    <insert id="insertVideo" useGeneratedKeys="true" keyProperty="id">
+        insert into video(course_id, chapter_id, sort, is_free, title,video_original_name)
+        values(
+        <trim>
+            <if test="courseId != null">
+                #{courseId},
+            </if>
+            <if test="chapterId != null">
+                #{chapterId},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="isFree">
+                1,
+            </if>
+            <if test="isFree == false">
+                0,
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            #{videoOriginalName}
+        </trim>
+        )
+    </insert>
+
+    <!--  Video backfillVideoData(Integer videoId); -->
+    <select id="backfillVideoData" resultType="Video">
+        select *
+        from video
+        where id = #{videoId}
+    </select>
+
+    <!-- updateVideoById   -->
+    <update id="updateVideoById" parameterType="Video">
+        update video
+        set title               = #{title},
+            sort                = #{sort},
+            is_free             = #{isFree},
+            video_original_name = #{videoOriginalName}
+        where id = #{id}
+    </update>
+    <!--  List<String> selectVideoOriginalNameById(@Param("id") Long id);  -->
+    <select id="selectVideoOriginalNameById" resultType="String">
+        select video_original_name
+        from video
+        where course_id = #{id}
+    </select>
+
+    <!--  List<Video> selectAllByArray(@Param("arrs")Integer[] arrs);  -->
+    <select id="selectAllByArray" resultType="Video">
+        select * from video
+        where id in
+        <foreach collection="arrs" item="videoId" separator="," open="(" close=")">
+            #{videoId}
+        </foreach>
+    </select>
+
+    <!--  List<Video> selectVideoByChapterId(@Param("id") Integer id);  -->
+    <select id="selectVideoByChapterId" resultType="Video">
+        select *
+        from video
+        where chapter_id = #{id}
+    </select>
+</mapper>

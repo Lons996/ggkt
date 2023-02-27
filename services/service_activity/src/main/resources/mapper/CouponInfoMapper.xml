@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zwf666.mapper.CouponInfoMapper">
+    <resultMap id="BaseResultMap" type="top.zwf666.mycreatebean.activity_entity.CouponInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="coupon_type" property="couponType" jdbcType="TINYINT"/>
+        <result column="coupon_name" property="couponName" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="condition_amount" property="conditionAmount" jdbcType="DECIMAL"/>
+        <result column="start_time" property="startTime" jdbcType="DATE"/>
+        <result column="end_time" property="endTime" jdbcType="DATE"/>
+        <result column="range_type" property="rangeType" jdbcType="TINYINT"/>
+        <result column="rule_desc" property="ruleDesc" jdbcType="VARCHAR"/>
+        <result column="publish_count" property="publishCount" jdbcType="INTEGER"/>
+        <result column="per_limit" property="perLimit" jdbcType="INTEGER"/>
+        <result column="use_count" property="useCount" jdbcType="INTEGER"/>
+        <result column="receive_count" property="receiveCount" jdbcType="INTEGER"/>
+        <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="publish_status" property="publishStatus" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from coupon_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="top.zwf666.mycreatebean.activity_entity.CouponInfo">
+        insert into coupon_info (coupon_type, coupon_name,
+                                 amount, condition_amount, start_time,
+                                 end_time, range_type, rule_desc,
+                                 publish_count, per_limit, use_count,
+                                 receive_count, expire_time, publish_status,
+                                 is_deleted)
+        values (#{couponType,jdbcType=TINYINT},
+                #{couponName,jdbcType=VARCHAR},
+                100,
+                0,
+                #{startTime,jdbcType=DATE},
+                #{endTime,jdbcType=DATE},
+                1,
+                #{ruleDesc,jdbcType=VARCHAR},
+                #{publishCount},
+                1,
+                0,
+                10,
+                #{expireTime,jdbcType=TIMESTAMP},
+                1,
+                0)
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="top.zwf666.mycreatebean.activity_entity.CouponInfo">
+        update coupon_info
+        set coupon_type      = #{couponType,jdbcType=TINYINT},
+            coupon_name      = #{couponName,jdbcType=VARCHAR},
+            start_time       = #{startTime,jdbcType=DATE},
+            end_time         = #{endTime,jdbcType=DATE},
+            rule_desc        = #{ruleDesc,jdbcType=VARCHAR},
+            publish_count    = #{publishCount,jdbcType=INTEGER},
+            expire_time      = #{expireTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id,
+               coupon_type,
+               coupon_name,
+               amount,
+               condition_amount,
+               start_time,
+               end_time,
+               range_type,
+               rule_desc,
+               publish_count,
+               per_limit,
+               use_count,
+               receive_count,
+               expire_time,
+               publish_status,
+               create_time,
+               update_time,
+               is_deleted
+        from coupon_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               coupon_type,
+               coupon_name,
+               amount,
+               condition_amount,
+               start_time,
+               end_time,
+               range_type,
+               rule_desc,
+               publish_count,
+               per_limit,
+               use_count,
+               receive_count,
+               expire_time,
+               publish_status,
+               create_time,
+               update_time,
+               is_deleted
+        from coupon_info
+    </select>
+</mapper>
